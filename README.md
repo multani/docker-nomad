@@ -10,18 +10,18 @@ docker run -d \
 --name nomad \
 --net host \
 -e NOMAD_LOCAL_CONFIG='{ "server": {
-    "enabled": true,
-    "bootstrap_expect": 3
-},
-"region": "${REGION}",
-"data_dir": "/nomad/data/",
-"bind_addr": "0.0.0.0",
-"advertise": {
-    "http": "${IPV4}:4646",
-    "rpc": "${IPV4}:4647",
-    "serf": "${IPV4}:4648"
-},
-"enable_debug": true }' \
+        "enabled": true,
+        "bootstrap_expect": 3
+    },
+    "region": "${REGION}",
+    "data_dir": "/nomad/data/",
+    "bind_addr": "0.0.0.0",
+    "advertise": {
+        "http": "${IPV4}:4646",
+        "rpc": "${IPV4}:4647",
+        "serf": "${IPV4}:4648"
+    },
+    "enable_debug": true }' \
 -v "/opt/nomad:/opt/nomad" \
 djenriquez/nomad:v0.4.1 agent
 ```
