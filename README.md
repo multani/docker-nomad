@@ -4,6 +4,7 @@ This repo produces a dockerized version of Nomad following Hashicorp's model for
 This image is meant to be run with host network privileges. It can use preconfigured Nomad hcl files by mounting those config to `/etc/nomad`.
 
 # To run:
+Server:
 ```bash
 docker run -d \
 --name nomad \
@@ -12,7 +13,7 @@ docker run -d \
     "enabled": true,
     "bootstrap_expect": 3
 },
-"region": "${AWS_REGION}",
+"region": "${REGION}",
 "data_dir": "/nomad/data/",
 "bind_addr": "0.0.0.0",
 "advertise": {
@@ -21,6 +22,29 @@ docker run -d \
     "serf": "${IPV4}:4648"
 },
 "enable_debug": true }' \
+-v "/opt/nomad:/opt/nomad" \
+djenriquez/nomad:v0.4.1 agent
+```
+
+Client:
+```bash
+docker run -d \
+--name nomad \
+--net host \
+-e NOMAD_LOCAL_CONFIG='{
+    "datacenter": "${DATACENTER}",
+    "client": {
+        "enabled": true
+    },
+    "region": "${REGION}",
+    "data_dir": "/nomad/data/",
+    "bind_addr": "0.0.0.0",
+    "advertise": {
+        "http": "${IPV4}:4646",
+        "rpc": "${IPV4}:4647",
+        "serf": "${IPV4}:4648"
+    },
+    "enable_debug": true }' \
 -v "/opt/nomad:/opt/nomad" \
 djenriquez/nomad:v0.4.1 agent
 ```
