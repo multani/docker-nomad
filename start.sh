@@ -1,6 +1,7 @@
 #!/usr/local/bin/dumb-init /bin/sh
 # Script created following Hashicorp's model for Consul: 
 # https://github.com/hashicorp/docker-consul/blob/master/0.X/docker-entrypoint.sh
+# Comments in this file originate from the project above, simply replacing 'Consul' with 'Nomad'.
 set -e
 
 # Note above that we run dumb-init as PID 1 in order to reap zombie processes
