@@ -23,6 +23,7 @@ docker run -d \
     },
     "enable_debug": true }' \
 -v "/opt/nomad:/opt/nomad" \
+-v "/var/run/docker.sock:/var/run/docker.sock" \
 djenriquez/nomad:v0.4.1 agent
 ```
 
@@ -46,6 +47,7 @@ docker run -d \
     },
     "enable_debug": true }' \
 -v "/opt/nomad:/opt/nomad" \
+-v "/var/run/docker.sock:/var/run/docker.sock" \
 djenriquez/nomad:v0.4.1 agent
 ```
 
