@@ -48,10 +48,7 @@ fi
 if [ "$1" = 'nomad' ]; then
     # If the data or config dirs are bind mounted then chown them.
     # Note: This checks for root ownership as that's the most common case.
-    if [ "$(stat -c %u /nomad/data)" != "$(id -u nomad)" ]; then
-        chown root:root /etc/nomad
-    fi
-    if [ "$(stat -c %u /nomad/data)" != "$(id -u nomad)" ]; then
+    if [ "$(stat -c %u /nomad/data)" != "$(id -u root)" ]; then
         chown root:root /etc/nomad
     fi
 
@@ -62,7 +59,7 @@ if [ "$1" = 'nomad' ]; then
         setcap "cap_net_bind_service=+ep" /bin/nomad
     fi
 
-    set -- gosu nomad "$@"
+    set -- gosu root "$@"
 fi
 
 exec "$@"
