@@ -13,6 +13,7 @@ docker run -d \
         "enabled": true,
         "bootstrap_expect": 3
     },
+    "datacenter": "${DATACENTER}",
     "region": "${REGION}",
     "data_dir": "/nomad/data/",
     "bind_addr": "0.0.0.0",
@@ -33,11 +34,10 @@ Client:
 docker run -d \
 --name nomad \
 --net host \
--e NOMAD_LOCAL_CONFIG='{
-    "datacenter": "${DATACENTER}",
-    "client": {
+-e NOMAD_LOCAL_CONFIG='{ "client": {
         "enabled": true
     },
+    "datacenter": "${DATACENTER}",
     "region": "${REGION}",
     "data_dir": "/nomad/data/",
     "bind_addr": "0.0.0.0",
