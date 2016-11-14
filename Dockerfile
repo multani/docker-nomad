@@ -5,8 +5,8 @@ MAINTAINER DJ Enriquez <dj.enriquez@infospace.com> (@djenriquez)
 RUN addgroup nomad && \
     adduser -S -G nomad nomad
 
-ENV NOMAD_VERSION 0.4.1
-ENV NOMAD_SHA256 0cdb5dd95c918c6237dddeafe2e9d2049558fea79ed43eacdfcd247d5b093d67
+ENV NOMAD_VERSION 0.5.0-rc2
+ENV NOMAD_SHA256 347794dcd1f5f68e4da4de6b1d3d1d94f057f8cfa5c55ad6df8a7c5482ca1a1e
 ENV GLIBC_VERSION "2.23-r1"
 ENV GOSU_VERSION 1.9
 
