@@ -26,8 +26,8 @@ RUN set -x && \
     gosu nobody true && \
     apk del .gosu-deps
 
-ENV NOMAD_VERSION 0.5.2-rc1 
-ENV NOMAD_SHA256 bee30478d29a1c1582602c7e7a3e2b1192b0a1a19684a68cb2b9b4abb2b59893
+ENV NOMAD_VERSION 0.5.2
+ENV NOMAD_SHA256 7f23aa44686b2ae505ecfc5364a43f87c2a029ea03f6ab050384f2a2b32ac648
 
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip /tmp/nomad.zip
 RUN echo "${NOMAD_SHA256}  /tmp/nomad.zip" > /tmp/nomad.sha256 \
