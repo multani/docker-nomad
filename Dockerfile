@@ -1,6 +1,6 @@
 FROM alpine:3.5
 
-MAINTAINER DJ Enriquez <dj.enriquez@infospace.com> (@djenriquez)
+MAINTAINER DJ Enriquez <denrie.enriquezjr@gmail.com> (@djenriquez)
 
 RUN addgroup nomad && \
     adduser -S -G nomad nomad
