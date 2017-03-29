@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.5
 
 MAINTAINER DJ Enriquez <dj.enriquez@infospace.com> (@djenriquez)
 
@@ -9,7 +9,7 @@ ENV GLIBC_VERSION "2.23-r1"
 ENV GOSU_VERSION 1.9
 
 RUN set -x && \
-    apk --update add --no-cache --virtual .gosu-deps dpkg curl ca-certificates gnupg libcap openssl && \
+    apk --update add --no-cache --virtual .gosu-deps tzdata dpkg curl ca-certificates gnupg libcap openssl && \
     curl -Ls https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk > /tmp/glibc-${GLIBC_VERSION}.apk && \
     apk add --allow-untrusted /tmp/glibc-${GLIBC_VERSION}.apk && \
     rm -rf /tmp/glibc-${GLIBC_VERSION}.apk /var/cache/apk/* && \
