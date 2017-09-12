@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:3.6
 
 MAINTAINER DJ Enriquez <denrie.enriquezjr@gmail.com> (@djenriquez)
 
@@ -26,8 +26,8 @@ RUN set -x && \
     gosu nobody true && \
     apk del .gosu-deps
 
-ENV NOMAD_VERSION 0.6.0
-ENV NOMAD_SHA256 fcf108046164cfeda84eab1c3047e36ad59d239b66e6b2f013e6c93064bc6313
+ENV NOMAD_VERSION 0.6.3
+ENV NOMAD_SHA256 908ee049bda380dc931be2c8dc905e41b58e59f68715dce896d69417381b1f4e
 
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip /tmp/nomad.zip
 RUN echo "${NOMAD_SHA256}  /tmp/nomad.zip" > /tmp/nomad.sha256 \
