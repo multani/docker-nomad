@@ -1,6 +1,6 @@
 FROM alpine:3.6
 
-MAINTAINER DJ Enriquez <denrie.enriquezjr@gmail.com> (@djenriquez)
+LABEL maintainer="DJ Enriquez <denrie.enriquezjr@gmail.com> (@djenriquez)"
 
 RUN addgroup nomad && \
     adduser -S -G nomad nomad
