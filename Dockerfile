@@ -42,7 +42,7 @@ RUN mkdir -p /nomad/data && \
     mkdir -p /etc/nomad && \
     chown -R nomad:nomad /nomad
 
-EXPOSE 4646 4647 4648
+EXPOSE 4646 4647 4648 4648/udp
 
 ADD start.sh /usr/local/bin/start.sh
 
