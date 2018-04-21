@@ -13,8 +13,8 @@ set -e
 # NOMAD_CONFIG_DIR isn't exposed as a volume but you can compose additional
 # config files in there if you use this image as a base, or use NOMAD_LOCAL_CONFIG
 # below.
-NOMAD_DATA_DIR=/nomad/data
-NOMAD_CONFIG_DIR=/etc/nomad
+NOMAD_DATA_DIR=${NOMAD_DATA_DIR:-"/nomad/data"}
+NOMAD_CONFIG_DIR=${NOMAD_CONFIG_DIR:-"/etc/nomad"}
 
 # You can also set the NOMAD_LOCAL_CONFIG environemnt variable to pass some
 # Nomad configuration JSON without having to bind any volumes.
