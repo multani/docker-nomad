@@ -43,6 +43,11 @@ RUN set -x \
   && chmod +x /bin/nomad \
   && rm -rf "$GNUPGHOME" nomad_${NOMAD_VERSION}_linux_amd64.zip nomad_${NOMAD_VERSION}_SHA256SUMS nomad_${NOMAD_VERSION}_SHA256SUMS.sig \
   && apk del .nomad-deps
+  
+RUN set -x \
+  && apk --update add --no-cache ca-certificates openssl \
+  && update-ca-certificates
+
 
 RUN mkdir -p /nomad/data && \
     mkdir -p /etc/nomad && \
