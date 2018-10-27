@@ -15,7 +15,7 @@ RUN set -x \
   && update-ca-certificates
 
 RUN set -x && \
-    apk --update add --no-cache --virtual .gosu-deps dpkg curl gnupg && \
+    apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
     curl -L -o /tmp/glibc-${GLIBC_VERSION}.apk https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
     apk add --allow-untrusted /tmp/glibc-${GLIBC_VERSION}.apk && \
     rm -rf /tmp/glibc-${GLIBC_VERSION}.apk /var/cache/apk/* && \
@@ -32,10 +32,10 @@ RUN set -x && \
     gosu nobody true && \
     apk del .gosu-deps
 
-ENV NOMAD_VERSION 0.8.4
+ENV NOMAD_VERSION 0.8.5
 
 RUN set -x \
-  && apk --update add --no-cache --virtual .nomad-deps gnupg curl \
+  && apk --update add --no-cache --virtual .nomad-deps curl dpkg gnupg \
   && cd /tmp \
   && curl -L -o nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
   && curl -L -o nomad_${NOMAD_VERSION}_SHA256SUMS      https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_SHA256SUMS \
