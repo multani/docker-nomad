@@ -1,13 +1,13 @@
-FROM alpine:3.6
+FROM alpine:3.8
 
 LABEL maintainer="DJ Enriquez <denrie.enriquezjr@gmail.com> (@djenriquez)"
 
 RUN addgroup nomad && \
     adduser -S -G nomad nomad
 
-ENV GLIBC_VERSION "2.25-r0"
-ENV GOSU_VERSION 1.10
-ENV DUMB_INIT_VERSION 1.2.0
+ENV GLIBC_VERSION "2.28-r0"
+ENV GOSU_VERSION 1.11
+ENV DUMB_INIT_VERSION 1.2.2
 
 RUN set -x && \
     apk --update add --no-cache --virtual .gosu-deps dpkg curl gnupg && \
