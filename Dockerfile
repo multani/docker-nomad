@@ -9,6 +9,11 @@ ENV GLIBC_VERSION "2.28-r0"
 ENV GOSU_VERSION 1.11
 ENV DUMB_INIT_VERSION 1.2.2
 
+# Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
+RUN set -x \
+  && apk --update add --no-cache ca-certificates openssl \
+  && update-ca-certificates
+
 RUN set -x && \
     apk --update add --no-cache --virtual .gosu-deps dpkg curl gnupg && \
     curl -L -o /tmp/glibc-${GLIBC_VERSION}.apk https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
@@ -43,11 +48,6 @@ RUN set -x \
   && chmod +x /bin/nomad \
   && rm -rf "$GNUPGHOME" nomad_${NOMAD_VERSION}_linux_amd64.zip nomad_${NOMAD_VERSION}_SHA256SUMS nomad_${NOMAD_VERSION}_SHA256SUMS.sig \
   && apk del .nomad-deps
-  
-RUN set -x \
-  && apk --update add --no-cache ca-certificates openssl \
-  && update-ca-certificates
-
 
 RUN mkdir -p /nomad/data && \
     mkdir -p /etc/nomad && \
