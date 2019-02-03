@@ -19,6 +19,24 @@ You can use the Docker Compose file to get started:
 docker-compose up
 ```
 
+The relevant Docker Compose bits are:
+
+```
+services:
+  nomad:
+    image: multani/nomad
+    command: agent -dev
+    privileged: true
+    network_mode: host
+    environment:
+      NOMAD_LOCAL_CONFIG: |
+        data_dir = "/nomad/data/"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - /tmp:/tmp
+```
+
 Or you can configured Nomad on dedicated host with the following command lines.
 
 ## Server:

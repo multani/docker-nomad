@@ -1,6 +1,7 @@
 FROM alpine:3.8
 
-LABEL maintainer="DJ Enriquez <denrie.enriquezjr@gmail.com> (@djenriquez)"
+# Based on https://github.com/djenriquez/nomad
+LABEL maintainer="Jonathan Ballet <jon@multani.info>"
 
 RUN addgroup nomad && \
     adduser -S -G nomad nomad
