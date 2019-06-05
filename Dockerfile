@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 # Based on https://github.com/djenriquez/nomad
 LABEL maintainer="Jonathan Ballet <jon@multani.info>"
@@ -6,8 +6,13 @@ LABEL maintainer="Jonathan Ballet <jon@multani.info>"
 RUN addgroup nomad && \
     adduser -S -G nomad nomad
 
-ENV GLIBC_VERSION "2.28-r0"
+# https://github.com/andyshinn/alpine-pkg-glibc/releases
+ENV GLIBC_VERSION "2.29-r0"
+
+# https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION 1.11
+
+# https://github.com/Yelp/dumb-init/releases
 ENV DUMB_INIT_VERSION 1.2.2
 
 # Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
@@ -33,6 +38,7 @@ RUN set -x && \
     gosu nobody true && \
     apk del .gosu-deps
 
+# https://releases.hashicorp.com/nomad/
 ENV NOMAD_VERSION 0.9.2-rc1
 
 RUN set -x \
