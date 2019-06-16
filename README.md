@@ -1,15 +1,15 @@
 # Dockerized Nomad
-[![](https://images.microbadger.com/badges/image/multani/nomad.svg)](https://microbadger.com/images/multani/nomad)
 
-This is based on the work from [djenriquez/nomad](https://github.com/djenriquez/nomad).
+[![](https://images.microbadger.com/badges/image/multani/nomad.svg)](https://microbadger.com/images/multani/nomad) – [https://hub.docker.com/r/multani/nomad/](Docker Hub)
 
 This repo produces a dockerized version of Nomad following Hashicorp's model
 for their Dockerized Consul image found here:
 https://github.com/hashicorp/docker-Consul
 
-
 This image is meant to be run with host network privileges. It can use
 preconfigured Nomad hcl files by mounting those config to `/etc/nomad`.
+
+This is based on the work from [djenriquez/nomad](https://github.com/djenriquez/nomad).
 
 # To run:
 
