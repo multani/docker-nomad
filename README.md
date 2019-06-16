@@ -1,17 +1,35 @@
-# Dockerized Nomad
+# Run [Nomad](https://www.nomadproject.io) from a Docker container
 
-[![](https://images.microbadger.com/badges/image/multani/nomad.svg)](https://microbadger.com/images/multani/nomad) – [https://hub.docker.com/r/multani/nomad/](Docker Hub)
+[![microbadger](https://images.microbadger.com/badges/image/multani/nomad.svg)](https://microbadger.com/images/multani/nomad) – [Docker Hub](https://hub.docker.com/r/multani/nomad/)
 
-This repo produces a dockerized version of Nomad following Hashicorp's model
-for their Dockerized Consul image found here:
-https://github.com/hashicorp/docker-Consul
+This repository builds a Docker image to run the
+[Nomad](https://www.nomadproject.io) scheduler.
 
-This image is meant to be run with host network privileges. It can use
-preconfigured Nomad hcl files by mounting those config to `/etc/nomad`.
+The image is mostly useful for testing purpose, when you want to ship a small
+stack running Nomad along other containers. It is meant to be run with host
+network privileges. Nomad itself can be configured:
 
-This is based on the work from [djenriquez/nomad](https://github.com/djenriquez/nomad).
+* either by bind-mounting [HCL/JSON configuration
+  files](https://www.nomadproject.io/docs/configuration/) into `/etc/nomad`
 
-# To run:
+* and/or by setting the configuration content directly into the
+  `NOMAD_LOCAL_CONFIG` environment variable (see examples below).
+
+You also need to bind-mount the following directories (unless you really now
+what you are doing):
+
+* `/var/run/docker.sock`: to access the Docker socket, used by Nomad Docker's
+  driver
+* `/tmp`: default temporary directory used by Nomad's `-dev` mode
+
+
+The repository produces a dockerized version of Nomad following Hashicorp's
+model for their [Dockerized Consul
+image](https://github.com/hashicorp/docker-consul). It is based on the work from
+[djenriquez/nomad](https://github.com/djenriquez/nomad).
+
+
+## To run:
 
 You can use the Docker Compose file to get started:
 
@@ -21,10 +39,13 @@ docker-compose up
 
 The relevant Docker Compose bits are:
 
-```
+```yaml
+version: '2.1'
+
 services:
   nomad:
     image: multani/nomad
+    build: .
     command: agent -dev
     privileged: true
     network_mode: host
@@ -39,13 +60,13 @@ services:
 
 Or you can configured Nomad on dedicated host with the following command lines.
 
-## Server:
+### Server:
 
 ```bash
 docker run -d \
---name nomad \
---net host \
--e NOMAD_LOCAL_CONFIG='
+  --name nomad \
+  --net host \
+  -e NOMAD_LOCAL_CONFIG='
 server {
   enabled = true
   bootstrap_expect = 3
@@ -64,20 +85,20 @@ advertise {
   serf = "{{ GetPrivateIP }}:4648"
 }
 ' \
--v "/srv/nomad/data:/nomad/data:rw" \
-multani/nomad agent
+  -v "/srv/nomad/data:/nomad/data:rw" \
+  multani/nomad agent
 ```
 
-## Client
+### Client
 
 Note that you need the `privileged` flag turned on for Nomad to run correctly):
 
 ```bash
 docker run -d \
---name nomad \
---net host \
---privileged \
--e NOMAD_LOCAL_CONFIG='
+  --name nomad \
+  --net host \
+  --privileged \
+  -e NOMAD_LOCAL_CONFIG='
 client {
   enabled = true
 }
@@ -95,17 +116,17 @@ advertise {
   serf = "{{ GetPrivateIP }}:4648"
 }
 ' \
--v "/srv/nomad/data:/nomad/data:rw" \
--v "/var/run/docker.sock:/var/run/docker.sock" \
--v "/tmp:/tmp" \
-multani/nomad agent
+  -v "/srv/nomad/data:/nomad/data:rw" \
+  -v "/var/run/docker.sock:/var/run/docker.sock" \
+  -v "/tmp:/tmp" \
+  multani/nomad agent
 ```
 
 The above command is identical to running this example in Nomad's documentation
 for [bootstrapping with
 Consul](https://www.nomadproject.io/docs/cluster/bootstrapping.html).
 
-# Correctly configuring Nomad data directory
+## Correctly configuring Nomad data directory
 
 Due to the way Nomad exposed template files it generates, you need to take
 special precautions when configuring its data directory.
@@ -121,8 +142,8 @@ You can run the Nomad container with the following options in this case:
 export NOMAD_DATA_DIR=/host/path/to/nomad/data
 
 docker run \
-...\
--v $NOMAD_DATA_DIR:$NOMAD_DATA_DIR:rw \
--e NOMAD_DATA_DIR=$NOMAD_DATA_DIR \
-multani/nomad agent
+  ...\
+  -v "$NOMAD_DATA_DIR:$NOMAD_DATA_DIR:rw" \
+  -e "NOMAD_DATA_DIR=$NOMAD_DATA_DIR" \
+  multani/nomad agent
 ```
