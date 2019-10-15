@@ -39,7 +39,7 @@ RUN set -x && \
     apk del .gosu-deps
 
 # https://releases.hashicorp.com/nomad/
-ENV NOMAD_VERSION 0.9.5
+ENV NOMAD_VERSION 0.9.6
 
 RUN set -x \
   && apk --update add --no-cache --virtual .nomad-deps curl dpkg gnupg \
