@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.11
 
 # Based on https://github.com/djenriquez/nomad
 LABEL maintainer="Jonathan Ballet <jon@multani.info>"
@@ -7,7 +7,7 @@ RUN addgroup nomad && \
     adduser -S -G nomad nomad
 
 # https://github.com/andyshinn/alpine-pkg-glibc/releases
-ENV GLIBC_VERSION "2.29-r0"
+ENV GLIBC_VERSION "2.30-r0"
 
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION 1.11
