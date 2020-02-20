@@ -1,6 +1,6 @@
 # Run [Nomad](https://www.nomadproject.io) from a Docker container
 
-[![microbadger](https://images.microbadger.com/badges/image/multani/nomad.svg)](https://microbadger.com/images/multani/nomad) – [Docker Hub](https://hub.docker.com/r/multani/nomad/)
+[![microbadger](https://images.microbadger.com/badges/image/multani/nomad.svg)](https://microbadger.com/images/multani/nomad) [![Docker Pulls](https://img.shields.io/docker/pulls/multani/nomad.svg)](https://hub.docker.com/r/multani/nomad/)
 
 This repository builds a Docker image to run the
 [Nomad](https://www.nomadproject.io) scheduler.
