@@ -48,8 +48,8 @@ fi
 if [ "$1" = 'nomad' -a -z "${NOMAD_DISABLE_PERM_MGMT+x}" ]; then
     # If the data or config dirs are bind mounted then chown them.
     # Note: This checks for root ownership as that's the most common case.
-    if [ "$(stat -c %u /nomad/data)" != "$(id -u root)" ]; then
-        chown root:root /etc/nomad
+    if [ "$(stat -c %u $NOMAD_DATA_DIR)" != "$(id -u root)" ]; then
+        chown root:root $NOMAD_DATA_DIR
     fi
 
     # If requested, set the capability to bind to privileged ports before
