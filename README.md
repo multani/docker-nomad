@@ -22,6 +22,9 @@ what you are doing):
   driver
 * `/tmp`: default temporary directory used by Nomad's `-dev` mode
 
+You can run the container as a non-root user, in which case you should set the
+`NOMAD_DISABLE_PERM_MGMT` environment variable to any value. This is especially
+useful when running standalone Nomad servers.
 
 The repository produces a dockerized version of Nomad following Hashicorp's
 model for their [Dockerized Consul
@@ -60,12 +63,20 @@ services:
 
 Or you can configured Nomad on dedicated host with the following command lines.
 
-### Server:
+### Server
+
+Notes for the server:
+
+* It doesn't need to run as root.
+* If you decide to run it as non-root, the Nomad data directory must have the
+  proper permissions.
 
 ```bash
 docker run -d \
   --name nomad \
   --net host \
+  --user nomad \
+  -e NOMAD_DISABLE_PERM_MGMT=true \
   -e NOMAD_LOCAL_CONFIG='
 server {
   enabled = true
@@ -85,13 +96,17 @@ advertise {
   serf = "{{ GetPrivateIP }}:4648"
 }
 ' \
-  -v "/srv/nomad/data:/nomad/data:rw" \
+  -v "nomad:/nomad/data:rw" \
   multani/nomad agent
 ```
 
 ### Client
 
-Note that you need the `privileged` flag turned on for Nomad to run correctly):
+Notes for the client:
+
+* Most of the task drivers require quite high privileges, you should most
+  probably run the container as root with the [`privileged` Docker
+  flag](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities).
 
 ```bash
 docker run -d \
