@@ -19,7 +19,7 @@ NOMAD_CONFIG_DIR=${NOMAD_CONFIG_DIR:-"/etc/nomad"}
 # You can also set the NOMAD_LOCAL_CONFIG environemnt variable to pass some
 # Nomad configuration JSON without having to bind any volumes.
 if [ -n "$NOMAD_LOCAL_CONFIG" ]; then
-	echo "$NOMAD_LOCAL_CONFIG" > "$NOMAD_CONFIG_DIR/local.json"
+    echo "$NOMAD_LOCAL_CONFIG" > "$NOMAD_CONFIG_DIR/local.json"
 fi
 
 # If the user is trying to run Nomad directly with some arguments, then
@@ -45,11 +45,11 @@ elif nomad --help "$1" 2>&1 | grep -q "nomad $1"; then
 fi
 
 # If we are running Nomad, make sure it executes as the proper user.
-if [ "$1" = 'nomad' ]; then
+if [ "$1" = 'nomad' -a -z "${NOMAD_DISABLE_PERM_MGMT+x}" ]; then
     # If the data or config dirs are bind mounted then chown them.
     # Note: This checks for root ownership as that's the most common case.
-    if [ "$(stat -c %u /nomad/data)" != "$(id -u root)" ]; then
-        chown root:root /etc/nomad
+    if [ "$(stat -c %u $NOMAD_DATA_DIR)" != "$(id -u root)" ]; then
+        chown root:root $NOMAD_DATA_DIR
     fi
 
     # If requested, set the capability to bind to privileged ports before

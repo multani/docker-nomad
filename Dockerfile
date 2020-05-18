@@ -58,7 +58,7 @@ RUN set -x \
 
 RUN mkdir -p /nomad/data && \
     mkdir -p /etc/nomad && \
-    chown -R nomad:nomad /nomad
+    chown -R nomad:nomad /nomad /etc/nomad
 
 EXPOSE 4646 4647 4648 4648/udp
 
