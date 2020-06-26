@@ -14,9 +14,6 @@ ENV GLIBC_VERSION "2.30-r0"
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION "1.11"
 
-# https://github.com/containernetworking/plugins/releases
-ENV CNI_PLUGINS_VERSION "v0.8.6"
-
 # Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
 RUN apk --update add --no-cache ca-certificates dumb-init iptables openssl \
   && update-ca-certificates
@@ -34,6 +31,12 @@ RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
     rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc && \
     chmod +x /usr/local/bin/gosu && \
     gosu nobody true && \
+    apk del .gosu-deps
+
+# https://github.com/containernetworking/plugins/releases
+ENV CNI_PLUGINS_VERSION "v0.8.6"
+
+RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
     curl -L -O "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz" && \
     curl -L -O "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc" && \
     export GNUPGHOME="$(mktemp -d)" && \
