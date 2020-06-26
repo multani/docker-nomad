@@ -15,7 +15,12 @@ ENV GLIBC_VERSION "2.30-r0"
 ENV GOSU_VERSION "1.11"
 
 # Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
-RUN apk --update add --no-cache ca-certificates dumb-init iptables openssl \
+RUN apk --update add \
+        ca-certificates \
+        dumb-init \
+        iptables \
+        openssl \
+    --no-cache \
   && update-ca-certificates
 
 RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
