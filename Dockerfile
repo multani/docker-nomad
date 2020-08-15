@@ -56,7 +56,7 @@ RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
     apk del .gosu-deps
 
 # https://releases.hashicorp.com/nomad/
-ENV NOMAD_VERSION 0.12.2
+ENV NOMAD_VERSION 0.12.3
 
 RUN apk --update add --no-cache --virtual .nomad-deps curl dpkg gnupg \
   && cd /tmp \
