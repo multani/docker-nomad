@@ -8,25 +8,28 @@ LABEL maintainer="Jonathan Ballet <jon@multani.info>"
 RUN addgroup nomad && \
     adduser -S -G nomad nomad
 
+# Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
+RUN apk --update add \
+        ca-certificates \
+    --no-cache \
+  && update-ca-certificates
+
+
 # https://github.com/andyshinn/alpine-pkg-glibc/releases
-ENV GLIBC_VERSION "2.30-r0"
+ENV GLIBC_VERSION "2.32-r0"
+
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk && \
+    apk add glibc-2.32-r0.apk
+
+RUN apk add \
+        dumb-init \
+        iptables
 
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION "1.11"
 
-# Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
-RUN apk --update add \
-        ca-certificates \
-        dumb-init \
-        iptables \
-        openssl \
-    --no-cache \
-  && update-ca-certificates
-
 RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
-    curl -L -o /tmp/glibc-${GLIBC_VERSION}.apk https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
-    apk add --allow-untrusted /tmp/glibc-${GLIBC_VERSION}.apk && \
-    rm -rf /tmp/glibc-${GLIBC_VERSION}.apk /var/cache/apk/* && \
     dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" && \
     curl -L -o /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" && \
     curl -L -o /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" && \
@@ -53,7 +56,7 @@ RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
     apk del .gosu-deps
 
 # https://releases.hashicorp.com/nomad/
-ENV NOMAD_VERSION 0.12.1
+ENV NOMAD_VERSION 0.12.2
 
 RUN apk --update add --no-cache --virtual .nomad-deps curl dpkg gnupg \
   && cd /tmp \
