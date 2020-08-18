@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-SHELL ["/bin/sh", "-x", "-c"]
+SHELL ["/bin/ash", "-x", "-c", "-o", "pipefail"]
 
 # Based on https://github.com/djenriquez/nomad
 LABEL maintainer="Jonathan Ballet <jon@multani.info>"
@@ -9,9 +9,8 @@ RUN addgroup nomad && \
     adduser -S -G nomad nomad
 
 # Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
-RUN apk --update add \
+RUN apk --update --no-cache add \
         ca-certificates \
-    --no-cache \
   && update-ca-certificates
 
 
@@ -19,21 +18,24 @@ RUN apk --update add \
 ENV GLIBC_VERSION "2.32-r0"
 
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk && \
-    apk add glibc-2.32-r0.apk
+    wget -q -O glibc.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
+    apk add --no-cache \
+        glibc.apk && \
+    rm glibc.apk
 
-RUN apk add \
+RUN apk add --no-cache \
         dumb-init \
         iptables
 
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION "1.11"
 
-RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
+RUN apk --update add --no-cache --virtual .gosu-deps dpkg gnupg && \
     dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" && \
-    curl -L -o /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" && \
-    curl -L -o /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" && \
-    export GNUPGHOME="$(mktemp -d)" && \
+    wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" && \
+    wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" && \
+    GNUPGHOME="$(mktemp -d)" && \
+    export GNUPGHOME && \
     gpg --keyserver pgp.mit.edu --keyserver keyserver.pgp.com --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
     gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \
     rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc && \
@@ -44,10 +46,11 @@ RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
 # https://github.com/containernetworking/plugins/releases
 ENV CNI_PLUGINS_VERSION "v0.8.6"
 
-RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
-    curl -L -O "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz" && \
-    curl -L -O "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc" && \
-    export GNUPGHOME="$(mktemp -d)" && \
+RUN apk --update add --no-cache --virtual .gosu-deps dpkg gnupg && \
+    wget -q -O cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz" && \
+    wget -q -O cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc" && \
+    GNUPGHOME="$(mktemp -d)" && \
+    export GNUPGHOME && \
     gpg --keyserver pgp.mit.edu --keyserver keyserver.pgp.com --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 5B1053CE38EA2E0FEB956C0595BC5E3F3F1B2C87 && \
     gpg --batch --verify cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz && \
     mkdir -p /opt/cni/bin && \
@@ -58,12 +61,12 @@ RUN apk --update add --no-cache --virtual .gosu-deps curl dpkg gnupg && \
 # https://releases.hashicorp.com/nomad/
 ENV NOMAD_VERSION 0.12.3
 
-RUN apk --update add --no-cache --virtual .nomad-deps curl dpkg gnupg \
-  && cd /tmp \
-  && curl -L -o nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
-  && curl -L -o nomad_${NOMAD_VERSION}_SHA256SUMS      https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_SHA256SUMS \
-  && curl -L -o nomad_${NOMAD_VERSION}_SHA256SUMS.sig  https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_SHA256SUMS.sig \
-  && export GNUPGHOME="$(mktemp -d)" \
+RUN apk --update add --no-cache --virtual .nomad-deps dpkg gnupg \
+  && wget -q -O nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
+  && wget -q -O nomad_${NOMAD_VERSION}_SHA256SUMS      https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_SHA256SUMS \
+  && wget -q -O nomad_${NOMAD_VERSION}_SHA256SUMS.sig  https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_SHA256SUMS.sig \
+  && GNUPGHOME="$(mktemp -d)" \
+  && export GNUPGHOME \
   && gpg --keyserver pgp.mit.edu --keyserver keyserver.pgp.com --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C \
   && gpg --batch --verify nomad_${NOMAD_VERSION}_SHA256SUMS.sig nomad_${NOMAD_VERSION}_SHA256SUMS \
   && grep nomad_${NOMAD_VERSION}_linux_amd64.zip nomad_${NOMAD_VERSION}_SHA256SUMS | sha256sum -c \
@@ -78,6 +81,6 @@ RUN mkdir -p /nomad/data && \
 
 EXPOSE 4646 4647 4648 4648/udp
 
-ADD start.sh /usr/local/bin/start.sh
+COPY start.sh /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/start.sh"]
