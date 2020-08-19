@@ -43,21 +43,6 @@ RUN apk --update add --no-cache --virtual .gosu-deps dpkg gnupg && \
     gosu nobody true && \
     apk del .gosu-deps
 
-# https://github.com/containernetworking/plugins/releases
-ENV CNI_PLUGINS_VERSION "v0.8.6"
-
-RUN apk --update add --no-cache --virtual .gosu-deps dpkg gnupg && \
-    wget -q -O cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz" && \
-    wget -q -O cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc" && \
-    GNUPGHOME="$(mktemp -d)" && \
-    export GNUPGHOME && \
-    gpg --keyserver pgp.mit.edu --keyserver keyserver.pgp.com --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 5B1053CE38EA2E0FEB956C0595BC5E3F3F1B2C87 && \
-    gpg --batch --verify cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz.asc cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz && \
-    mkdir -p /opt/cni/bin && \
-    tar xf cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz -C /opt/cni/bin && \
-    rm -rf "$GNUPGHOME" cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz* && \
-    apk del .gosu-deps
-
 # https://releases.hashicorp.com/nomad/
 ENV NOMAD_VERSION 0.12.3
 
