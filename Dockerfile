@@ -14,7 +14,7 @@ RUN apk --update --no-cache add \
   && update-ca-certificates
 
 
-# https://github.com/andyshinn/alpine-pkg-glibc/releases
+# https://github.com/sgerrand/alpine-pkg-glibc/releases
 ENV GLIBC_VERSION "2.32-r0"
 
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
@@ -28,7 +28,7 @@ RUN apk add --no-cache \
         iptables
 
 # https://github.com/tianon/gosu/releases
-ENV GOSU_VERSION "1.11"
+ENV GOSU_VERSION "1.12"
 
 RUN apk --update add --no-cache --virtual .gosu-deps dpkg gnupg && \
     dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" && \
