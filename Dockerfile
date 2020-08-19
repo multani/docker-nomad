@@ -24,8 +24,7 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
     rm glibc.apk
 
 RUN apk add --no-cache \
-        dumb-init \
-        iptables
+        dumb-init
 
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION "1.11"
