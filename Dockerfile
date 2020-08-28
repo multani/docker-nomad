@@ -26,6 +26,9 @@ RUN apk add \
         dumb-init \
         iptables
 
+# Install timezone data so we can run Nomad periodic jobs containing timezone information
+RUN apk add tzdata
+
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION "1.11"
 
