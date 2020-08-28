@@ -26,6 +26,9 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
 RUN apk add --no-cache \
         dumb-init
 
+# Install timezone data so we can run Nomad periodic jobs containing timezone information
+RUN apk add tzdata
+
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION "1.12"
 
