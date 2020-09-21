@@ -27,7 +27,8 @@ RUN apk add --no-cache \
         dumb-init
 
 # Install timezone data so we can run Nomad periodic jobs containing timezone information
-RUN apk add tzdata
+RUN apk add --no-cache \
+        tzdata
 
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION "1.12"
@@ -46,7 +47,7 @@ RUN apk --update add --no-cache --virtual .gosu-deps dpkg gnupg && \
     apk del .gosu-deps
 
 # https://releases.hashicorp.com/nomad/
-ENV NOMAD_VERSION 0.12.4
+ENV NOMAD_VERSION 0.12.5
 
 RUN apk --update add --no-cache --virtual .nomad-deps dpkg gnupg \
   && wget -q -O nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
