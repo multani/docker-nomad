@@ -1,0 +1,18 @@
+name: Docker build
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test the Docker image
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Lint the Dockerfile
+        uses: brpaz/hadolint-action@v1.1.0
+
+      - name: Build the Docker image
+        run: docker build .
