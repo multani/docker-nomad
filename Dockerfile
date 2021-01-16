@@ -47,7 +47,7 @@ RUN apk --update add --no-cache --virtual .gosu-deps dpkg gnupg && \
     apk del .gosu-deps
 
 # https://releases.hashicorp.com/nomad/
-ENV NOMAD_VERSION 1.0.1
+ENV NOMAD_VERSION 1.0.2
 
 RUN apk --update add --no-cache --virtual .nomad-deps dpkg gnupg \
   && wget -q -O nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
