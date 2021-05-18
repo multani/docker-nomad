@@ -43,7 +43,7 @@ ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}
 RUN apk add --no-cache --virtual .nomad-deps gnupg \
   && GNUPGHOME="$(mktemp -d)" \
   && export GNUPGHOME \
-  && gpg --keyserver pgp.mit.edu --keyserver keyserver.pgp.com --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C \
+  && gpg --keyserver pgp.mit.edu --keyserver keyserver.pgp.com --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "C874 011F 0AB4 0511 0D02 1055 3436 5D94 72D7 468F" \
   && gpg --batch --verify nomad_${NOMAD_VERSION}_SHA256SUMS.sig nomad_${NOMAD_VERSION}_SHA256SUMS \
   && grep nomad_${NOMAD_VERSION}_linux_amd64.zip nomad_${NOMAD_VERSION}_SHA256SUMS | sha256sum -c \
   && unzip -d /bin nomad_${NOMAD_VERSION}_linux_amd64.zip \
