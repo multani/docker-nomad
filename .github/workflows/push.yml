@@ -24,8 +24,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]${GITHUB_REF#refs/heads/}"
+        id: extract_branch
+
       - name: Build and push "latest"
-        if: github.event_name == 'branches'
+        if: github.event_name == 'push' && steps.extract_branch.outputs.branch == 'master'
         uses: docker/build-push-action@v2
         with:
           tags: latest
