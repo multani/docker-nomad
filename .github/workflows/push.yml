@@ -34,11 +34,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: latest
+          tags: multani/nomad:latest
 
       - name: Build and push "tag"
         if: github.event_name == 'tags'
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: multani/nomad:${{ steps.meta.outputs.tags }}
