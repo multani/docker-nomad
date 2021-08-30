@@ -2,8 +2,8 @@ name: Push latest to Docker Hub
 
 on:
   push:
-    branches:
-      - master
+    branches: []
+      #- master
 
 jobs:
   docker:
