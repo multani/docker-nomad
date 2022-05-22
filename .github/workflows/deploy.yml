@@ -1,0 +1,89 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - '*'
+
+    branches:
+      - master
+
+permissions:
+  contents: write # create new releases
+  packages: write # create new package versions
+
+env:
+  images: |
+    index.docker.io/multani/nomad
+    ghcr.io/multani/nomad
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker meta
+        id: docker-meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.images }}
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest
+            type=sha
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.docker-meta.outputs.tags }}
+          labels: ${{ steps.docker-meta.outputs.labels }}
+
+      - name: Nomad tag
+        id: nomad
+        run: |
+          echo "::set-output name=tag::$(grep 'ARG NOMAD_VERSION=' Dockerfile | cut -d '=' -f 2)"
+
+      - name: Docker tag
+        id: docker
+        run: |
+          echo "::set-output name=tag::${{ github.ref_name }}"
+
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.14
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        with:
+          generate_release_notes: true
+          discussion_category_name: Announcement
+          name: Nomad ${{ steps.nomad.outputs.tag }}
+          body: |
+            [Nomad ${{ steps.nomad.outputs.tag }}](https://github.com/hashicorp/nomad/releases/tag/v${{ steps.nomad.outputs.tag }})
+
+
+            Pull from [Docker Hub]():
+
+            ```
+            docker pull multani/nomad:${{ steps.docker.outputs.tag }}
+            ```
+
+            or [GitHub Packages](https://github.com/multani/docker-nomad/pkgs/container/nomad):
+
+            ```
+            docker pull ghcr.io/multani/nomad:${{ steps.docker.outputs.tag }}
+            ```
