@@ -77,7 +77,7 @@ jobs:
             [Nomad ${{ steps.nomad.outputs.tag }}](https://github.com/hashicorp/nomad/releases/tag/v${{ steps.nomad.outputs.tag }})
 
 
-            Pull from [Docker Hub]():
+            Pull from [Docker Hub](https://hub.docker.com/r/multani/nomad/):
 
             ```
             docker pull multani/nomad:${{ steps.docker.outputs.tag }}
