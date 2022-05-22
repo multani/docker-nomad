@@ -71,7 +71,7 @@ jobs:
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
-          discussion_category_name: Announcement
+          discussion_category_name: announcements
           name: Nomad ${{ steps.nomad.outputs.tag }}
           body: |
             [Nomad ${{ steps.nomad.outputs.tag }}](https://github.com/hashicorp/nomad/releases/tag/v${{ steps.nomad.outputs.tag }})
