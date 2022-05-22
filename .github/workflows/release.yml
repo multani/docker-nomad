@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  goreleaser:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          image:
+          images:
             multani/nomad-test
             #ghcr.io/multani/docker-nomad-private
           tags: |
