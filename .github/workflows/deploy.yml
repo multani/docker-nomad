@@ -12,6 +12,7 @@ on:
 permissions:
   contents: write # create new releases
   packages: write # create new package versions
+  discussions: write # create new announcements
 
 env:
   images: |
