@@ -1,4 +1,5 @@
-FROM --platform=$BUILDPLATFORM debian:bullseye-slim
+FROM debian:bullseye-slim
+#FROM --platform=$BUILDPLATFORM debian:bullseye-slim
 
 # Fetch the target information injected by Docker build
 ARG TARGETOS
