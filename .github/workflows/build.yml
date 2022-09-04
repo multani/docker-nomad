@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Lint the Dockerfile
-        uses: brpaz/hadolint-action@v1.5.0
+        uses: hadolint/hadolint-action@v2.1.0
 
       - name: Build the Docker image
         run: docker build .
