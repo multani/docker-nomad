@@ -9,8 +9,8 @@ SHELL ["/bin/bash", "-x", "-c", "-o", "pipefail"]
 # Based on https://github.com/djenriquez/nomad
 LABEL maintainer="Jonathan Ballet <jon@multani.info>"
 
-RUN addgroup nomad \
- && adduser --ingroup nomad nomad \
+RUN groupadd nomad \
+ && useradd --gid nomad nomad \
  && mkdir -p /nomad/data \
  && mkdir -p /etc/nomad \
  && chown -R nomad:nomad /nomad /etc/nomad
