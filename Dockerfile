@@ -17,12 +17,10 @@ RUN groupadd nomad \
  && chown -R nomad:nomad /nomad /etc/nomad
 
 # Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
-# Install timezone data so we can run Nomad periodic jobs containing timezone information
 RUN apt-get update --yes \
     && apt-get install --no-install-recommends --yes \
-        ca-certificates \
-        dumb-init \
-        tzdata \
+        ca-certificates=20210119 \
+        dumb-init=1.2.5-1 \
     && update-ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
@@ -37,8 +35,8 @@ ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}
     nomad_${NOMAD_VERSION}_SHA256SUMS.sig
 RUN apt-get update \
 && apt-get install --no-install-recommends --yes \
-    gnupg \
-    unzip  \
+    gnupg=2.2.27-2+deb11u2 \
+    unzip=6.0-26+deb11u1 \
   && GNUPGHOME="$(mktemp -d)" \
   && export GNUPGHOME \
   && gpg --keyserver pgp.mit.edu --keyserver keys.openpgp.org --keyserver keyserver.ubuntu.com --recv-keys "C874 011F 0AB4 0511 0D02 1055 3436 5D94 72D7 468F" \
