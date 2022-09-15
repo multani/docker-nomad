@@ -22,7 +22,7 @@ RUN apk --update --no-cache add \
   && update-ca-certificates
 
 # https://github.com/sgerrand/alpine-pkg-glibc/releases
-ARG GLIBC_VERSION=2.33-r0
+ARG GLIBC_VERSION=2.34-r0
 
 ADD https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub /etc/apk/keys/sgerrand.rsa.pub
 ADD https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
@@ -32,7 +32,7 @@ RUN apk add --no-cache \
  && rm glibc.apk
 
 # https://releases.hashicorp.com/nomad/
-ARG NOMAD_VERSION=1.3.5
+ARG NOMAD_VERSION=1.4.0-beta.1
 
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
     nomad_${NOMAD_VERSION}_linux_amd64.zip
