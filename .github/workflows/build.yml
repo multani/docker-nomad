@@ -18,4 +18,4 @@ jobs:
         run: docker build --tag test .
 
       - name: Try to run the Docker image
-        run: docke run --rm test agent -help
+        run: docker run --rm test agent -help
