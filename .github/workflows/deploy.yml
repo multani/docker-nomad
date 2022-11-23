@@ -46,12 +46,12 @@ jobs:
         with:
           images: ${{ env.images }}
           tags: |
+            type=ref,event=branch
             type=ref,event=tag
-            type=raw,value=latest
             type=sha
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           push: true
           tags: ${{ steps.docker-meta.outputs.tags }}
@@ -60,12 +60,12 @@ jobs:
       - name: Nomad tag
         id: nomad
         run: |
-          echo "::set-output name=tag::$(grep 'ARG NOMAD_VERSION=' Dockerfile | cut -d '=' -f 2)"
+          echo "echo tag=$(grep 'ARG NOMAD_VERSION=' Dockerfile | cut -d '=' -f 2) >> $GITHUB_OUTPUT"
 
       - name: Docker tag
         id: docker
         run: |
-          echo "::set-output name=tag::${{ github.ref_name }}"
+          echo "echo tag=${{ github.ref_name }} >> $GITHUB_OUTPUT"
 
       - name: Release
         uses: softprops/action-gh-release@v1
