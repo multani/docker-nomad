@@ -1,4 +1,4 @@
-FROM alpine:3.16.2
+FROM alpine:3.17.0
 
 SHELL ["/bin/ash", "-x", "-c", "-o", "pipefail"]
 
@@ -27,7 +27,7 @@ ARG GLIBC_VERSION=2.34-r0
 ADD https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub /etc/apk/keys/sgerrand.rsa.pub
 ADD https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
     glibc.apk
-RUN apk add --no-cache \
+RUN apk add --no-cache --force-overwrite \
         glibc.apk \
  && rm glibc.apk
 
