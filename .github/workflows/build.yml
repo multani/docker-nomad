@@ -15,4 +15,7 @@ jobs:
         uses: hadolint/hadolint-action@v3.0.0
 
       - name: Build the Docker image
-        run: docker build .
+        run: docker build --tag test .
+
+      - name: Try to run the Docker image
+        run: docke run --rm test agent -help
