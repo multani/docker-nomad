@@ -23,7 +23,7 @@ RUN apk --update --no-cache add \
   && update-ca-certificates
 
 # https://releases.hashicorp.com/nomad/
-ARG NOMAD_VERSION=1.4.3
+ARG NOMAD_VERSION=1.5.0-beta.1
 
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
     nomad_${NOMAD_VERSION}_linux_amd64.zip
