@@ -37,7 +37,7 @@ image](https://github.com/hashicorp/docker-consul). It is based on the work from
 You can use the Docker Compose file to get started:
 
 ```bash
-docker compose up
+docker-compose up
 ```
 
 The relevant Docker Compose bits are:
