@@ -16,11 +16,20 @@ RUN addgroup nomad \
 RUN apk --update --no-cache add \
         ca-certificates \
         dumb-init \
-        gcompat \
         libcap \
         tzdata \
         su-exec \
   && update-ca-certificates
+
+# https://github.com/sgerrand/alpine-pkg-glibc/releases
+ARG GLIBC_VERSION=2.34-r0
+
+ADD https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub /etc/apk/keys/sgerrand.rsa.pub
+ADD https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
+    glibc.apk
+RUN apk add --no-cache --force-overwrite \
+        glibc.apk \
+ && rm glibc.apk
 
 # https://releases.hashicorp.com/nomad/
 ARG NOMAD_VERSION=1.4.3
