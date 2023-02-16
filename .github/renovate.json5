@@ -1,0 +1,43 @@
+{
+  "extends": ["config:base"],
+
+  "baseBranches": [
+    "master",
+    "branch-1.2.x",
+    "branch-1.3.x",
+    "branch-1.4.x",
+  ],
+
+  "regexManagers": [
+    {
+      "fileMatch": ["Dockerfile"],
+      "matchStrings": ["ARG NOMAD_VERSION=(?<currentValue>\\S+)\\n"],
+      "depNameTemplate": "hashicorp/nomad",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>\\S+)"
+    },
+  ],
+
+  "packageRules": [
+    {
+      "matchBaseBranches": ["master"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "ignoreUnstable": false,
+    },
+    {
+      "matchBaseBranches": ["branch-1.2.x"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=1.2"
+    },
+    {
+      "matchBaseBranches": ["branch-1.3.x"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=1.3",
+    },
+    {
+      "matchBaseBranches": ["branch-1.4.x"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=1.4",
+    },
+  ],
+}
