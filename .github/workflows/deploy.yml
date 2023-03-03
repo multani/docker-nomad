@@ -60,12 +60,12 @@ jobs:
       - name: Nomad tag
         id: nomad
         run: |
-          echo "echo tag=$(grep 'ARG NOMAD_VERSION=' Dockerfile | cut -d '=' -f 2) >> $GITHUB_OUTPUT"
+          echo "tag=$(grep 'ARG NOMAD_VERSION=' Dockerfile | cut -d '=' -f 2)" >> $GITHUB_OUTPUT
 
       - name: Docker tag
         id: docker
         run: |
-          echo "echo tag=${{ github.ref_name }} >> $GITHUB_OUTPUT"
+          echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
       - name: Release
         uses: softprops/action-gh-release@v1
