@@ -2,12 +2,26 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/multani/nomad.svg)](https://hub.docker.com/r/multani/nomad/)
 
-This repository builds a Docker image to run the
-[Nomad](https://www.nomadproject.io) scheduler.
+This repository builds a Docker image to run the [Nomad](https://www.nomadproject.io) scheduler.
 
 The image is mostly useful for testing purpose, when you want to ship a small
-stack running Nomad along other containers. It is meant to be run with host
-network privileges. Nomad itself can be configured:
+stack running Nomad along other containers.
+
+Get the image using:
+
+```sh
+docker pull ghcr.io/multani/nomad
+```
+or:
+
+```sh
+docker pull multani/nomad
+```
+
+See below for examples on how to start a Nomad client or server.
+
+This image is meant to be run with host network privileges.
+Nomad itself can be configured:
 
 * either by bind-mounting [HCL/JSON configuration
   files](https://www.nomadproject.io/docs/configuration/) into `/etc/nomad`
