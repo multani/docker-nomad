@@ -19,6 +19,7 @@ RUN apk --update --no-cache add \
         libcap \
         tzdata \
         su-exec \
+        coreutils \ # ensure bind mount compatible version of df is used (related: hashicorp/nomad#12440, gliderlabs/docker-alpine#97)
   && update-ca-certificates
 
 # https://github.com/sgerrand/alpine-pkg-glibc/releases
