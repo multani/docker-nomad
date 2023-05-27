@@ -13,13 +13,14 @@ RUN addgroup nomad \
 
 # Allow to fetch artifacts from TLS endpoint during the builds and by Nomad after.
 # Install timezone data so we can run Nomad periodic jobs containing timezone information
+# Ensure bind mount compatible (coreutils) version of df is used (related: hashicorp/nomad#12440, gliderlabs/docker-alpine#97)
 RUN apk --update --no-cache add \
         ca-certificates \
         dumb-init \
         libcap \
         tzdata \
         su-exec \
-        coreutils \ # ensure bind mount compatible version of df is used (related: hashicorp/nomad#12440, gliderlabs/docker-alpine#97)
+        coreutils \
   && update-ca-certificates
 
 # https://github.com/sgerrand/alpine-pkg-glibc/releases
