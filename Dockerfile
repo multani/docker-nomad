@@ -32,7 +32,7 @@ RUN apk add --no-cache --force-overwrite \
  && rm glibc.apk
 
 # https://releases.hashicorp.com/nomad/
-ARG NOMAD_VERSION=1.4.9
+ARG NOMAD_VERSION=1.4.10
 
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
     nomad_${NOMAD_VERSION}_linux_amd64.zip
