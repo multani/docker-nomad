@@ -39,5 +39,10 @@
       "matchPackageNames": ["hashicorp/nomad"],
       "allowedVersions": "<=1.4",
     },
+    {
+      "matchBaseBranches": ["branch-1.5.x"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=1.5",
+    },
   ],
 }
