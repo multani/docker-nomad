@@ -16,9 +16,36 @@ on:
         type: string
 
 jobs:
+  prepare:
+    name: Prepare Build Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.platforms.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create matrix
+        id: platforms
+        run: |
+          echo "matrix=$(echo '"${{ inputs.platforms }}"' | jq -cr '. / ","')" >> "$GITHUB_OUTPUT"
+
+      - name: Show matrix
+        run: |
+          echo ${{ steps.platforms.outputs.matrix }}
+
   build:
     name: Build
     runs-on: ubuntu-latest
+    needs:
+      - prepare
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        platforms: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +65,7 @@ jobs:
         id: docker-setup
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: ${{ inputs.platforms }}
+          platforms: ${{ matrix.platforms }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -51,7 +78,7 @@ jobs:
           load: true  # load the image built locally for later use
           build-args: |-
             NOMAD_VERSION=${{ steps.meta.outputs.nomad }}
-          platforms: ${{ inputs.platforms }}
+          platforms: ${{ matrix.platforms }}
           push: false
           tags: local/nomad:test
 
