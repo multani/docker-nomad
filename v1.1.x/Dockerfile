@@ -2,6 +2,10 @@ FROM alpine:3.14
 
 SHELL ["/bin/ash", "-x", "-c", "-o", "pipefail"]
 
+# https://releases.hashicorp.com/nomad/
+ARG NOMAD_VERSION
+RUN test -n "$NOMAD_VERSION" || (echo "NOMAD_VERSION argument must be set" && false)
+
 # Based on https://github.com/djenriquez/nomad
 LABEL maintainer="Jonathan Ballet <jon@multani.info>"
 
@@ -30,9 +34,6 @@ ADD https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSI
 RUN apk add --no-cache \
         glibc.apk \
  && rm glibc.apk
-
-# https://releases.hashicorp.com/nomad/
-ARG NOMAD_VERSION=1.1.18
 
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
     nomad_${NOMAD_VERSION}_linux_amd64.zip

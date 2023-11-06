@@ -7,8 +7,8 @@
 
   "regexManagers": [
     {
-      "fileMatch": ["Dockerfile"],
-      "matchStrings": ["ARG NOMAD_VERSION=(?<currentValue>\\S+)\\n"],
+      "fileMatch": ["nomad-version"],
+      "matchStrings": ["(?<currentValue>\\S+)\\n"],
       "depNameTemplate": "hashicorp/nomad",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>\\S+)"
