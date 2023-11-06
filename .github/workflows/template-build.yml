@@ -26,6 +26,7 @@ jobs:
         id: meta
         working-directory: ${{ inputs.directory }}
         run: |
+          echo "nomad=$(cat nomad-version)" >> "$GITHUB_OUTPUT"
           echo "dockerfile=${{ inputs.directory }}/Dockerfile" >> "$GITHUB_OUTPUT"
 
       - name: Lint the Dockerfile
@@ -48,6 +49,8 @@ jobs:
           context: ${{ inputs.directory }}
           file: ${{ steps.meta.outputs.dockerfile }}
           load: true  # load the image built locally for later use
+          build-args: |-
+            NOMAD_VERSION=${{ steps.meta.outputs.nomad }}
           platforms: ${{ inputs.platforms }}
           push: false
           tags: local/nomad:test
