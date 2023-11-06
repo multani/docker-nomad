@@ -1,0 +1,22 @@
+name: "v1.4.x: build"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - v1.4.x/**
+
+  pull_request:
+    branches:
+      - master
+    paths:
+      - v1.4.x/**
+
+jobs:
+  test:
+    name: Test
+    uses: ./.github/workflows/template-build.yml
+    with:
+      platforms: linux/amd64
+      directory: v1.4.x

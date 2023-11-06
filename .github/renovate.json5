@@ -3,10 +3,6 @@
 
   "baseBranches": [
     "master",
-    "branch-1.2.x",
-    "branch-1.3.x",
-    "branch-1.4.x",
-    "branch-1.5.x",
   ],
 
   "regexManagers": [
@@ -19,31 +15,52 @@
     },
   ],
 
+  // These versions are not updated anymore.
+  "ignorePaths": [
+    "v0.9.x/**",
+    "v0.10.x/**",
+    "v0.11.x/**",
+    "v0.12.x/**",
+    "v1.0.x/**",
+    "v1.1.x/**",
+  ],
+
   "packageRules": [
     {
-      "matchBaseBranches": ["master"],
+      "matchFileNames": ["latest/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "ignoreUnstable": false,
+      "groupName": "nomad-latest",
     },
     {
-      "matchBaseBranches": ["branch-1.2.x"],
+      "matchFileNames": ["v1.2.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
-      "allowedVersions": "<=1.2"
+      "allowedVersions": "<=1.2",
+      "groupName": "nomad-1.2.x",
     },
     {
-      "matchBaseBranches": ["branch-1.3.x"],
+      "matchFileNames": ["v1.3.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "allowedVersions": "<=1.3",
+      "groupName": "nomad-1.3.x",
     },
     {
-      "matchBaseBranches": ["branch-1.4.x"],
+      "matchFileNames": ["v1.4.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "allowedVersions": "<=1.4",
+      "groupName": "nomad-1.4.x",
     },
     {
-      "matchBaseBranches": ["branch-1.5.x"],
+      "matchFileNames": ["v1.5.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "allowedVersions": "<=1.5",
+      "groupName": "nomad-1.5.x",
+    },
+    {
+      "matchFileNames": ["v1.6.x/**"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=1.6",
+      "groupName": "nomad-1.6.x",
     },
   ],
 }

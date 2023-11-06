@@ -1,0 +1,22 @@
+name: "Latest: build"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - latest/**
+
+  pull_request:
+    branches:
+      - master
+    paths:
+      - latest/**
+
+jobs:
+  test:
+    name: Test
+    uses: ./.github/workflows/template-build.yml
+    with:
+      platforms: linux/amd64
+      directory: latest

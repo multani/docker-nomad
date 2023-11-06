@@ -1,0 +1,56 @@
+# This builds the Docker image from the specified directory on all the
+# platforms and do a basic sanity check to verify that Nomad runs.
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      directory:
+        description: Directory where the Dockerfile is
+        required: true
+        type: string
+
+      platforms:
+        description: The platforms to build on
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Metadata
+        id: meta
+        working-directory: ${{ inputs.directory }}
+        run: |
+          echo "dockerfile=${{ inputs.directory }}/Dockerfile" >> "$GITHUB_OUTPUT"
+
+      - name: Lint the Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ${{ steps.meta.outputs.dockerfile }}
+
+      - name: Set up QEMU
+        id: docker-setup
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ inputs.platforms }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ inputs.directory }}
+          file: ${{ steps.meta.outputs.dockerfile }}
+          load: true  # load the image built locally for later use
+          platforms: ${{ inputs.platforms }}
+          push: false
+          tags: local/nomad:test
+
+      - name: Test
+        run: make test DOCKER_TAG=local/nomad:test
