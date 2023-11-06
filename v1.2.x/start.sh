@@ -1,5 +1,6 @@
 #!/usr/bin/dumb-init /bin/sh
-# Script created following Hashicorp's model for Consul: 
+# shellcheck shell=dash
+# Script created following Hashicorp's model for Consul:
 # https://github.com/hashicorp/docker-consul/blob/master/0.X/docker-entrypoint.sh
 # Comments in this file originate from the project above, simply replacing 'Consul' with 'Nomad'.
 set -e
@@ -8,6 +9,7 @@ set -e
 # as well as forward signals to all processes in its session. Normally, sh
 # wouldn't do either of these functions so we'd leak zombies as well as do
 # unclean termination of all our sub-processes.
+# As of docker 1.13, using docker run --init achieves the same outcome.
 
 # NOMAD_DATA_DIR is exposed as a volume for possible persistent storage. The
 # NOMAD_CONFIG_DIR isn't exposed as a volume but you can compose additional
@@ -24,7 +26,7 @@ fi
 
 # If the user is trying to run Nomad directly with some arguments, then
 # pass them to Nomad.
-if [ "${1:0:1}" = '-' ]; then
+if [ "$(cut -c 1 "$1")" = '-' ]; then
     set -- nomad "$@"
 fi
 
@@ -48,18 +50,18 @@ fi
 if [ "$1" = 'nomad' ] && [ -z "${NOMAD_DISABLE_PERM_MGMT+x}" ]; then
     # If the data or config dirs are bind mounted then chown them.
     # Note: This checks for root ownership as that's the most common case.
-    if [ "$(stat -c %u $NOMAD_DATA_DIR)" != "$(id -u root)" ]; then
-        chown root:root $NOMAD_DATA_DIR
+    if [ "$(stat -c %u "$NOMAD_DATA_DIR")" != "$(id -u root)" ]; then
+        chown root:root "$NOMAD_DATA_DIR"
     fi
 
     # If requested, set the capability to bind to privileged ports before
     # we drop to the non-root user. Note that this doesn't work with all
     # storage drivers (it won't work with AUFS).
-    if [ -n ${NOMAD+x} ]; then
+    if [ -n "${NOMAD+x}" ]; then
         setcap "cap_net_bind_service=+ep" /bin/nomad
     fi
 
-    set -- su-exec root "$@"
+    exec runuser -u root -- "$@"
 fi
 
 exec "$@"
