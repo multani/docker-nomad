@@ -1,0 +1,39 @@
+# This creates a new Git tag when the Nomad version changed.
+name: Create tag
+
+on:
+  workflow_call:
+    inputs:
+      directory:
+        description: Directory where the Dockerfile is
+        required: true
+        type: string
+
+    secrets:
+      PAT_GITHUB:
+        description: The authentication token for GitHub
+        required: true
+
+
+jobs:
+  create-tag:
+    name: Tag
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # create new tags
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_GITHUB }}
+
+      - name: Create tag
+        working-directory: ${{ inputs.directory }}
+        run: |
+          TAG="$(cat nomad-version)"
+          git config --global user.email ${{ github.actor }}
+          git config --global user.name "GitHub Actions"
+          git tag --annotate --message "Nomad $TAG" "$TAG"
+          git push --force origin "$TAG"

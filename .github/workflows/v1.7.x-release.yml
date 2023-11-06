@@ -1,0 +1,19 @@
+name: "v1.7.x: release"
+
+on:
+  push:
+    tags:
+      - 1.7.**
+
+jobs:
+  release:
+    name: Release
+    permissions:
+      contents: write
+      packages: write
+      discussions: write
+    uses: ./.github/workflows/template-release.yml
+    secrets: inherit
+    with:
+      platforms: linux/amd64
+      directory: v1.7.x

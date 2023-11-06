@@ -1,0 +1,19 @@
+name: "v1.5.x: create tag"
+
+on:
+  push:
+    branches:
+      - master
+
+    paths:
+      - v1.5.x/nomad-version
+
+jobs:
+  tag:
+    name: Tag
+    permissions:
+      contents: write
+    uses: ./.github/workflows/template-create-tag.yml
+    secrets: inherit
+    with:
+      directory: v1.5.x
