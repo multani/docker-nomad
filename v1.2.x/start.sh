@@ -26,7 +26,7 @@ fi
 
 # If the user is trying to run Nomad directly with some arguments, then
 # pass them to Nomad.
-if [ "$(cut -c 1 "$1")" = '-' ]; then
+if [ "$(printf "%s" "$1" | cut -c 1)" = '-' ]; then
     set -- nomad "$@"
 fi
 
