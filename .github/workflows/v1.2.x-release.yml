@@ -15,5 +15,5 @@ jobs:
     uses: ./.github/workflows/template-release.yml
     secrets: inherit
     with:
-      platforms: linux/amd64
+      platforms: linux/amd64,linux/arm/v7,linux/arm64
       directory: v1.2.x

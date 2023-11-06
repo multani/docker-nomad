@@ -1,4 +1,8 @@
-FROM debian:12.2-slim
+FROM --platform=$TARGETPLATFORM debian:12.2-slim
+
+# Fetch the target information injected by Docker build
+ARG TARGETOS
+ARG TARGETARCH
 
 SHELL ["/bin/bash", "-x", "-c", "-o", "pipefail"]
 
@@ -23,8 +27,8 @@ RUN apt-get update \
   && update-ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
-ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip \
-    nomad_${NOMAD_VERSION}_linux_amd64.zip
+ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_${TARGETOS}_${TARGETARCH}.zip \
+    nomad_${NOMAD_VERSION}_${TARGETOS}_${TARGETARCH}.zip
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_SHA256SUMS \
     nomad_${NOMAD_VERSION}_SHA256SUMS
 ADD https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_SHA256SUMS.sig \
@@ -38,10 +42,10 @@ RUN apt-get update \
   && export GNUPGHOME \
   && gpg --keyserver pgp.mit.edu --keyserver keys.openpgp.org --keyserver keyserver.ubuntu.com --recv-keys "C874 011F 0AB4 0511 0D02 1055 3436 5D94 72D7 468F" \
   && gpg --batch --verify nomad_${NOMAD_VERSION}_SHA256SUMS.sig nomad_${NOMAD_VERSION}_SHA256SUMS \
-  && grep nomad_${NOMAD_VERSION}_linux_amd64.zip nomad_${NOMAD_VERSION}_SHA256SUMS | sha256sum -c \
-  && unzip -d /bin nomad_${NOMAD_VERSION}_linux_amd64.zip \
+  && grep nomad_${NOMAD_VERSION}_${TARGETOS}_${TARGETARCH}.zip nomad_${NOMAD_VERSION}_SHA256SUMS | sha256sum -c \
+  && unzip -d /bin nomad_${NOMAD_VERSION}_${TARGETOS}_${TARGETARCH}.zip \
   && chmod +x /bin/nomad \
-  && rm -rf "$GNUPGHOME" nomad_${NOMAD_VERSION}_linux_amd64.zip nomad_${NOMAD_VERSION}_SHA256SUMS nomad_${NOMAD_VERSION}_SHA256SUMS.sig \
+  && rm -rf "$GNUPGHOME" nomad_${NOMAD_VERSION}_${TARGETOS}_${TARGETARCH}.zip nomad_${NOMAD_VERSION}_SHA256SUMS nomad_${NOMAD_VERSION}_SHA256SUMS.sig \
   && apt-get autoremove --purge --yes \
       gnupg \
       unzip \

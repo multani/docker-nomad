@@ -18,5 +18,5 @@ jobs:
     name: Test
     uses: ./.github/workflows/template-build.yml
     with:
-      platforms: linux/amd64
+      platforms: linux/amd64,linux/arm/v7,linux/arm64
       directory: v1.2.x
