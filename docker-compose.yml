@@ -3,7 +3,7 @@ version: '2.1'
 services:
   nomad:
     image: multani/nomad
-    build: .
+    build: latest
     command: agent -dev
     privileged: true
     network_mode: host
