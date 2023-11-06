@@ -5,13 +5,13 @@ on:
     branches:
       - master
     paths:
-      - v1.3.x/**
+      - v1.2.x/**
 
   pull_request:
     branches:
       - master
     paths:
-      - v1.3.x/**
+      - v1.2.x/**
 
 jobs:
   test:
@@ -19,4 +19,4 @@ jobs:
     uses: ./.github/workflows/template-build.yml
     with:
       platforms: linux/amd64
-      directory: v1.3.x
+      directory: v1.2.x
