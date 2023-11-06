@@ -27,7 +27,7 @@
 
   "packageRules": [
     {
-      "matchFileNames": ["latest/**"],
+      "matchFileNames": ["v1.7.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "ignoreUnstable": false,
       "groupName": "nomad-latest",

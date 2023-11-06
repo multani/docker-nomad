@@ -1,0 +1,78 @@
+# This runs the whole release workflow:
+# * test the images
+# * build and push them to the registries
+# * create the GitHub release / discussion
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      directory:
+        description: Directory where the Dockerfile is
+        required: true
+        type: string
+
+      platforms:
+        description: The platforms to build on
+        required: true
+        type: string
+
+    secrets:
+      DOCKERHUB_USERNAME:
+        description: Docker Hub username
+        required: true
+
+      DOCKERHUB_TOKEN:
+        description: Docker Hub token
+        required: true
+
+
+jobs:
+  push:
+    permissions:
+      packages: write
+
+    uses: ./.github/workflows/template-push.yml
+    secrets: inherit
+    with:
+      directory: ${{ inputs.directory }}
+      platforms: ${{ inputs.platforms }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - push
+
+    permissions:
+      contents: write
+      discussions: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Metadata
+        id: meta
+        working-directory: ${{ inputs.directory }}
+        run: |
+          echo "nomad=$(cat nomad-version)" >> "$GITHUB_OUTPUT"
+          echo "git=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          discussion_category_name: announcements
+          name: Nomad ${{ steps.meta.outputs.nomad }}
+          body: |
+            [Nomad ${{ steps.meta.outputs.nomad }}](https://github.com/hashicorp/nomad/releases/tag/v${{ steps.meta.outputs.nomad }})
+
+            Pull the image from:
+
+            * [GitHub Packages](https://github.com/multani/docker-nomad-refactor/pkgs/container/nomad):
+              ```shell
+              docker pull ghcr.io/multani/nomad:${{ steps.meta.outputs.git }}
+              ```
+            * [Docker Hub](https://hub.docker.com/r/multani/nomad/):
+              ```shell
+              docker pull multani/nomad:${{ steps.meta.outputs.git }}
+              ```
