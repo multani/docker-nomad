@@ -1,12 +1,9 @@
 {
-  "extends": ["config:base"],
+  "extends": ["config:recommended"],
 
-  "baseBranches": [
-    "master",
-  ],
-
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "fileMatch": ["nomad-version"],
       "matchStrings": ["(?<currentValue>\\S+)\\n"],
       "depNameTemplate": "hashicorp/nomad",
@@ -24,6 +21,8 @@
     "v1.0.x/**",
     "v1.1.x/**",
   ],
+
+  "versioning": "semver",
 
   "packageRules": [
     {
