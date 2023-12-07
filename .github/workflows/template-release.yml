@@ -69,7 +69,7 @@ jobs:
 
             Pull the image from:
 
-            * [GitHub Packages](https://github.com/multani/docker-nomad-refactor/pkgs/container/nomad):
+            * [GitHub Packages](https://github.com/multani/docker-nomad/pkgs/container/nomad):
               ```shell
               docker pull ghcr.io/multani/nomad:${{ steps.meta.outputs.git }}
               ```
