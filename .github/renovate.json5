@@ -26,6 +26,10 @@
 
   "packageRules": [
     {
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
       "matchFileNames": ["v1.7.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "ignoreUnstable": false,
