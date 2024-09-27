@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM debian:12.2-slim
+FROM debian:12.2-slim
 
 # Fetch the target information injected by Docker build
 ARG TARGETOS
