@@ -30,12 +30,6 @@
       "automerge": true
     },
     {
-      "matchFileNames": ["v1.8.x/**"],
-      "matchPackageNames": ["hashicorp/nomad"],
-      "ignoreUnstable": false,
-      "groupName": "nomad-latest",
-    },
-    {
       "matchFileNames": ["v1.2.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "allowedVersions": "<=1.2",
@@ -70,6 +64,18 @@
       "matchPackageNames": ["hashicorp/nomad"],
       "allowedVersions": "<=1.7",
       "groupName": "nomad-1.7.x",
+    },
+    {
+      "matchFileNames": ["v1.8.x/**"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=1.8",
+      "groupName": "nomad-1.8.x",
+    },
+    {
+      "matchFileNames": ["v1.9.x/**"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "ignoreUnstable": false,
+      "groupName": "nomad-latest",
     },
   ],
 }
