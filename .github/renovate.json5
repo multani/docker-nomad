@@ -68,7 +68,7 @@
     {
       "matchFileNames": ["v1.8.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
-      "allowedVersions": "<=1.8",
+      "allowedVersions": "<=1.8.3",
       "groupName": "nomad-1.8.x",
     },
     {
