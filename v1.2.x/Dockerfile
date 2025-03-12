@@ -1,4 +1,4 @@
-FROM debian:12.2-slim
+FROM debian:12.9-slim
 
 # Fetch the target information injected by Docker build
 ARG TARGETOS
