@@ -8,18 +8,8 @@
       "matchStrings": ["(?<currentValue>\\S+)\\n"],
       "depNameTemplate": "hashicorp/nomad",
       "datasourceTemplate": "github-releases",
-      "extractVersionTemplate": "^v(?<version>\\S+)"
-    },
-
-    {
-      // https://docs.renovatebot.com/modules/versioning/debian/
-      // Remove the "-slim" prefix for the version
-      "customType": "regex",
-      "fileMatch": ["Dockerfile"],
-      "matchStrings": ["FROM debian:(?<currentValue>\\S+)-slim\\n"],
-      "depNameTemplate": "debian",
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "debian",
+      "extractVersionTemplate": "^v(?<version>\\S+)",
+      "versioningTemplate": "semver",
     },
   ],
 
@@ -33,7 +23,6 @@
     "v1.1.x/**",
   ],
 
-  "versioning": "semver",
 
   "packageRules": [
     {
