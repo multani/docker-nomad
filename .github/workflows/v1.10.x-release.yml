@@ -3,7 +3,7 @@ name: "v1.10.x: release"
 on:
   push:
     tags:
-      - 1.9.**
+      - 1.10.**
 
 jobs:
   release:
