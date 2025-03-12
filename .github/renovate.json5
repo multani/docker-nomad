@@ -10,6 +10,17 @@
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>\\S+)"
     },
+
+    {
+      // https://docs.renovatebot.com/modules/versioning/debian/
+      // Remove the "-slim" prefix for the version
+      "customType": "regex",
+      "fileMatch": ["Dockerfile"],
+      "matchStrings": ["FROM debian:(?<currentValue>\\S+)-slim\\n"],
+      "depNameTemplate": "debian",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "debian",
+    },
   ],
 
   // These versions are not updated anymore.
@@ -25,12 +36,6 @@
   "versioning": "semver",
 
   "packageRules": [
-    {
-      // https://docs.renovatebot.com/modules/versioning/debian/
-      "matchDepNames": ["debian"],
-      "matchDatasources": ["docker"],
-      "versioning": "debian",
-    },
     {
       "matchUpdateTypes": ["patch"],
       "automerge": true
