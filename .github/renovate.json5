@@ -26,6 +26,12 @@
 
   "packageRules": [
     {
+      // https://docs.renovatebot.com/modules/versioning/debian/
+      "matchDepNames": ["debian"],
+      "matchDatasources": ["docker"],
+      "versioning": "debian",
+    },
+    {
       "matchUpdateTypes": ["patch"],
       "automerge": true
     },
