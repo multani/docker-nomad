@@ -23,7 +23,7 @@ jobs:
       matrix: ${{ steps.platforms.outputs.matrix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Create matrix
         id: platforms
@@ -47,7 +47,7 @@ jobs:
         platforms: ${{ fromJson(needs.prepare.outputs.matrix) }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Metadata
         id: meta
