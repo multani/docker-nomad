@@ -22,6 +22,7 @@ RUN apt-get update \
   && apt-get install --yes --no-install-recommends \
     ca-certificates \
     dumb-init \
+    iproute2 \
     libcap2 \
     tzdata \
   && update-ca-certificates \
