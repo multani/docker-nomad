@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  consul:
+    image: hashicorp/consul:latest
+    command: agent -dev -client 0.0.0.0 -ui
+    ports:
+      - "8500:8500"
+
+  nomad:
+    image: multani/nomad
+    build:
+      context: v1.10.x
+      args:
+        NOMAD_VERSION: 1.10.4
+        TARGETOS: linux
+        TARGETARCH: amd64
+    command: agent -dev
+    privileged: true
+    network_mode: host
+    environment:
+      NOMAD_LOCAL_CONFIG: |
+        datacenter = "dc1"
+        region     = "global"
+
+        data_dir = "/nomad/data/"
+
+        bind_addr = "0.0.0.0"
+        advertise {
+          http = "{{ GetPrivateIP }}:4646"
+          rpc  = "{{ GetPrivateIP }}:4647"
+          serf = "{{ GetPrivateIP }}:4648"
+        }
+        consul {
+          address = "127.0.0.1:8500"
+        }
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - /tmp:/tmp
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
