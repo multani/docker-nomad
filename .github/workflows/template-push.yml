@@ -81,7 +81,7 @@ jobs:
 
       - name: Docker metadata
         id: docker-release
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.images }}
           labels: |
