@@ -3,7 +3,7 @@ name: "v1.7.x: create tag"
 on:
   push:
     branches:
-      - master
+      - main
 
     paths:
       - v1.7.x/nomad-version
