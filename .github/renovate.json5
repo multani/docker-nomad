@@ -4,7 +4,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["nomad-version"],
+      "managerFilePatterns": ["nomad-version"],
       "matchStrings": ["(?<currentValue>\\S+)\\n"],
       "depNameTemplate": "hashicorp/nomad",
       "datasourceTemplate": "github-releases",
@@ -85,6 +85,12 @@
     },
     {
       "matchFileNames": ["v1.11.x/**"],
+      "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=1.11",
+      "groupName": "nomad-1.11.x",
+    },
+    {
+      "matchFileNames": ["v2.0.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
       "ignoreUnstable": false,
       "groupName": "nomad-latest",
