@@ -3,13 +3,13 @@ name: "v1.8.x: build"
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - v1.8.x/**
 
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - v1.8.x/**
 
