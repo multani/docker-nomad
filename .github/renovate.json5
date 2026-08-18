@@ -4,7 +4,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["nomad-version"],
+      "managerFilePatterns": ["**/nomad-version"],
       "matchStrings": ["(?<currentValue>\\S+)\\n"],
       "depNameTemplate": "hashicorp/nomad",
       "datasourceTemplate": "github-releases",
