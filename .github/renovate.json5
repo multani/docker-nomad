@@ -92,6 +92,12 @@
     {
       "matchFileNames": ["v2.0.x/**"],
       "matchPackageNames": ["hashicorp/nomad"],
+      "allowedVersions": "<=2.0",
+      "groupName": "nomad-2.0.x",
+    },
+    {
+      "matchFileNames": ["v2.1.x/**"],
+      "matchPackageNames": ["hashicorp/nomad"],
       "ignoreUnstable": false,
       "groupName": "nomad-latest",
     },
